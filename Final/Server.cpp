@@ -52,9 +52,9 @@ public:
     pinMode(intWritePin, OUTPUT);
     pinMode(intReadPin, INPUT);
 
-    Switch *objTmpSwitch = this;
-    int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor, &objTmpSwitch);
-    pthread_exit(NULL);
+  //  Switch *objTmpSwitch = this;
+  //  int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor, &objTmpSwitch);
+  //  pthread_exit(NULL);
 
   }
 
@@ -127,13 +127,7 @@ public:
       Switch objSwitch =  arrSwitches[i];
       objSwitch.initializeOnce();
     }
-
-
-
-
-
   }
-
 };
 
 // For any real project this should be defined separately in a header file
@@ -174,6 +168,22 @@ void *startGpioServer(void *t){
 
   ::objBoard.initializeOnce();
   ::objBoard.startSensors();
+
+
+for(;;){
+
+  int i=0;
+  int j = sizeof(arrSwitches)/sizeof(arrSwitches[0]);
+
+  cout << "Total Switches are " << j;
+
+  for (i=0;i<j;i++){
+    Switch objSwitch =  arrSwitches[i];
+    objSwitch.startSensors();
+  }
+
+}
+
 }
 
 void serverGotMessage(void){
