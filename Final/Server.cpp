@@ -62,7 +62,7 @@ public:
   void startSensor(){
 
     // cout << "\n 2. Read Pin " << intReadPin << " Started \n";
-
+for(;;){
     // Read Switch state for manually press
     int intPinValue = digitalRead(intReadPin);
 
@@ -77,7 +77,7 @@ public:
       this -> toggledState(isOn, this);
     }
   }
-
+}
   void toggle(){
 
     isOn = !isOn;
@@ -174,14 +174,10 @@ void *startGpioServer(void *t){
   int i=0;
   int j = sizeof(::objBoard.arrSwitches)/sizeof(::objBoard.arrSwitches[0]);
 
-for(;;){
-
   for (i=0;i<j;i++){
     Switch objSwitch =  ::objBoard.arrSwitches[i];
     objSwitch.startSensor();
   }
-
-}
 
 }
 
