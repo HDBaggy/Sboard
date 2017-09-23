@@ -151,6 +151,10 @@ SBoard objBoard;
 
 int main( int argc, char **argv )
 {
+
+  ::objBoard.initializeOnce();
+  ::objBoard.startSensors();
+
   pthread_t threads[1];
   int rc2 = pthread_create(&threads[0], NULL, startGpioServer, NULL);
 
@@ -166,8 +170,7 @@ int main( int argc, char **argv )
 
 void *startGpioServer(void *t){
 
-  ::objBoard.initializeOnce();
-  ::objBoard.startSensors();
+
 
 
 for(;;){
