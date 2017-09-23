@@ -173,13 +173,13 @@ void *startGpioServer(void *t){
 for(;;){
 
   int i=0;
-  int j = sizeof(arrSwitches)/sizeof(arrSwitches[0]);
+  int j = sizeof(::objBoard.arrSwitches)/sizeof(::objBoard.arrSwitches[0]);
 
   cout << "Total Switches are " << j;
 
   for (i=0;i<j;i++){
     Switch objSwitch =  arrSwitches[i];
-    objSwitch.startSensors();
+    objSwitch.startSensor();
   }
 
 }
