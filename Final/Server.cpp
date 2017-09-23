@@ -53,7 +53,7 @@ public:
     pinMode(intReadPin, INPUT);
 
     Switch *objTmpSwitch = this;
-    int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor(), &objTmpSwitch);
+    int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor, &objTmpSwitch);
     pthread_exit(NULL);
 
   }
