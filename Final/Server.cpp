@@ -74,7 +74,7 @@ public:
       if (intPinValue == 0)
       this ->  toggle();
 
-      this -> toggledState(isOn,this);
+      this -> toggledState(isOn, &this);
     }
   }
 
