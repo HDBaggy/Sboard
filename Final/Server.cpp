@@ -106,10 +106,9 @@ public:
     Switch objSwitch1 = Switch(0,29);
     arrSwitches[0] =  objSwitch1;
 
-/*
     Switch objSwitch2 = Switch(2,28);
     arrSwitches[1] = objSwitch2;
-*/
+
     //  arrSwitches[1] =  Switch(2,28);
     //  arrSwitches[2] =  Switch(3,24);
     //  arrSwitches[3] =  Switch(7,11);
@@ -146,7 +145,10 @@ public:
 };
 
 void serverGotMessage(void);
-void *startGpioServer(void *t);
+void *startGpioServer1(void *t);
+void *startGpioServer2(void *t);
+void *startGpioServer3(void *t);
+
 EchoServer es = EchoServer(8080);
 SBoard objBoard;
 
@@ -157,10 +159,17 @@ int main( int argc, char **argv )
   ::objBoard.startSensors();
 
   pthread_t threads[1];
-  int rc2 = pthread_create(&threads[0], NULL, startGpioServer, NULL);
+  int rc1 = pthread_create(&threads[0], NULL, startGpioServer1, NULL);
+int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
+// int rc1 = pthread_create(&threads[0], NULL, startGpioServer, NULL);
 
-  if (rc2) {
-    cout << "Error:unable to create GPIO thread," << rc2 << endl;
+  if (rc1 ) {
+    cout << "Error:unable to create GPIO thread," << rc1 << endl;
+    exit(-1);
+  }
+
+  if (rc2 ) {
+    cout << "Error:unable to create GPIO thread," << rc1 << endl;
     exit(-1);
   }
   //   pthread_exit(NULL);
@@ -169,16 +178,22 @@ int main( int argc, char **argv )
   ::es.run();
 }
 
-void *startGpioServer(void *t){
+void *startGpioServer1(void *t){
 
-  int i=0;
-  int j = sizeof(::objBoard.arrSwitches)/sizeof(::objBoard.arrSwitches[0]);
-
-  for (i=0;i<j;i++){
-    Switch objSwitch =  ::objBoard.arrSwitches[i];
+    Switch objSwitch =  ::objBoard.arrSwitches[0];
     objSwitch.startSensor();
-  }
+}
 
+void *startGpioServer2(void *t){
+
+    Switch objSwitch =  ::objBoard.arrSwitches[1];
+    objSwitch.startSensor();
+}
+
+void *startGpioServer3(void *t){
+
+    Switch objSwitch =  ::objBoard.arrSwitches[2];
+    objSwitch.startSensor();
 }
 
 void serverGotMessage(void){
