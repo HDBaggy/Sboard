@@ -74,7 +74,7 @@ public:
       if (intPinValue == 0)
       this ->  toggle();
 
-      this -> toggledState(isOn, &this);
+      this -> toggledState(isOn, this);
     }
   }
 
@@ -89,7 +89,7 @@ public:
     Util::log( "\n Toggle from Input: " + intReadPin );
   }
 
-  virtual void toggledState(bool state, Switch objTmpSwitch);
+  virtual void toggledState(bool state, Switch *objTmpSwitch);
 
 };
 
@@ -189,7 +189,7 @@ void serverGotMessage(void){
   // ::objBoard.toggle();
 }
 
-void Switch::toggledState(bool state, Switch objTmpSwitch)
+void Switch::toggledState(bool state, Switch *objTmpSwitch)
 {
   cout << "The output -> " << objTmpSwitch.intReadPin << " State is ->" << state;
   if (state == true){
