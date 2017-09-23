@@ -96,7 +96,7 @@ public:
 class SBoard {
 
 public:
-  Switch arrSwitches[2];
+  Switch arrSwitches[1];
 
 
   void initializeOnce(){
@@ -106,9 +106,10 @@ public:
     Switch objSwitch1 = Switch(0,29);
     arrSwitches[0] =  objSwitch1;
 
+/*
     Switch objSwitch2 = Switch(2,28);
     arrSwitches[1] = objSwitch2;
-
+*/
     //  arrSwitches[1] =  Switch(2,28);
     //  arrSwitches[2] =  Switch(3,24);
     //  arrSwitches[3] =  Switch(7,11);
@@ -170,13 +171,10 @@ int main( int argc, char **argv )
 
 void *startGpioServer(void *t){
 
-
-
-
-for(;;){
-
   int i=0;
   int j = sizeof(::objBoard.arrSwitches)/sizeof(::objBoard.arrSwitches[0]);
+
+for(;;){
 
   for (i=0;i<j;i++){
     Switch objSwitch =  ::objBoard.arrSwitches[i];
