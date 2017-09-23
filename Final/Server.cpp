@@ -178,7 +178,7 @@ for(;;){
   cout << "Total Switches are " << j;
 
   for (i=0;i<j;i++){
-    Switch objSwitch =  arrSwitches[i];
+    Switch objSwitch =  ::objBoard.arrSwitches[i];
     objSwitch.startSensor();
   }
 
