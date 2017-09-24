@@ -96,7 +96,7 @@ public:
 class SBoard {
 
 public:
-  Switch arrSwitches[3];
+  Switch arrSwitches[4];
 
 
   void initializeOnce(){
@@ -112,8 +112,8 @@ public:
     Switch objSwitch3 = Switch(3,24);
     arrSwitches[2] =  objSwitch3;
 
-    // Switch objSwitch4 = Switch(7,11);
-    // arrSwitches[3] =  objSwitch4;
+    Switch objSwitch4 = Switch(7,13);
+    arrSwitches[3] =  objSwitch4;
   }
 
   void startSensors(){
@@ -165,7 +165,7 @@ int main( int argc, char **argv )
   int rc1 = pthread_create(&threads[0], NULL, startGpioServer1, NULL);
   int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
   int rc3 = pthread_create(&threads[2], NULL, startGpioServer3, NULL);
-  //int rc4 = pthread_create(&threads[3], NULL, startGpioServer4, NULL);
+  int rc4 = pthread_create(&threads[3], NULL, startGpioServer4, NULL);
 
   if (rc1 ) {
     cout << "Error:unable to create GPIO thread," << rc1 << endl;
@@ -182,11 +182,11 @@ int main( int argc, char **argv )
     cout << "Error:unable to create GPIO thread," << rc3 << endl;
     exit(-1);
   }
-/*
+
   if (rc4 ) {
     cout << "Error:unable to create GPIO thread," << rc4 << endl;
     exit(-1);
-  }*/
+  }
   //   pthread_exit(NULL);
 
   ::es.msg = serverGotMessage;
