@@ -224,7 +224,8 @@ void serverGotMessage(void){
 void Switch::toggledState(bool state, Switch *objTmpSwitch)
 {
   //cout << "The output -> " << objTmpSwitch->intReadPin << " State is ->" << state;
-  Util::log( "Output Pin: " + objTmpSwitch->intReadPin + " State: " + state);
+  Util::log( "Output Pin: " + objTmpSwitch->intReadPin);
+   Util::log( " State: " + state);
 
   if (state == true){
     ::es.broadcast("Switch On");
