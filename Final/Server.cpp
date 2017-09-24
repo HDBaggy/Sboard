@@ -96,7 +96,7 @@ public:
 class SBoard {
 
 public:
-  Switch arrSwitches[4];
+  Switch arrSwitches[3];
 
 
   void initializeOnce(){
@@ -112,8 +112,8 @@ public:
     Switch objSwitch3 = Switch(3,24);
     arrSwitches[2] =  objSwitch3;
 
-    Switch objSwitch4 = Switch(7,11);
-    arrSwitches[3] =  objSwitch4;
+    // Switch objSwitch4 = Switch(7,11);
+    // arrSwitches[3] =  objSwitch4;
   }
 
   void startSensors(){
@@ -225,7 +225,7 @@ void Switch::toggledState(bool state, Switch *objTmpSwitch)
 {
   //cout << "The output -> " << objTmpSwitch->intReadPin << " State is ->" << state;
   Util::log( "Output Pin: " + objTmpSwitch->intReadPin);
-   Util::log( " State: " + state);
+  Util::log( "State: " + state);
 
   if (state == true){
     ::es.broadcast("Switch On");
