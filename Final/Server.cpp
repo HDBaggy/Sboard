@@ -52,9 +52,9 @@ public:
     pinMode(intWritePin, OUTPUT);
     pinMode(intReadPin, INPUT);
 
-  //  Switch *objTmpSwitch = this;
-  //  int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor, &objTmpSwitch);
-  //  pthread_exit(NULL);
+    //  Switch *objTmpSwitch = this;
+    //  int rc2 = pthread_create(&threads[0], NULL, &Switch::startSensor, &objTmpSwitch);
+    //  pthread_exit(NULL);
 
   }
 
@@ -62,22 +62,22 @@ public:
   void startSensor(){
 
     // cout << "\n 2. Read Pin " << intReadPin << " Started \n";
-for(;;){
-    // Read Switch state for manually press
-    int intPinValue = digitalRead(intReadPin);
+    for(;;){
+      // Read Switch state for manually press
+      int intPinValue = digitalRead(intReadPin);
 
-    if (intPinValue == 1)
-    {
-      delay(WAIT_TIME);
-      intPinValue = digitalRead(intReadPin);
+      if (intPinValue == 1)
+      {
+        delay(WAIT_TIME);
+        intPinValue = digitalRead(intReadPin);
 
-      if (intPinValue == 0)
-      this ->  toggle();
+        if (intPinValue == 0)
+        this ->  toggle();
 
-      this -> toggledState(isOn, this);
+        this -> toggledState(isOn, this);
+      }
     }
   }
-}
   void toggle(){
 
     isOn = !isOn;
@@ -101,7 +101,7 @@ public:
 
   void initializeOnce(){
 
-    cout << "INitialize Switchboard called";
+    cout << "Initialize Switchboard called";
 
     Switch objSwitch1 = Switch(0,29);
     arrSwitches[0] =  objSwitch1;
@@ -109,9 +109,11 @@ public:
     Switch objSwitch2 = Switch(2,28);
     arrSwitches[1] = objSwitch2;
 
-    //  arrSwitches[1] =  Switch(2,28);
-    //  arrSwitches[2] =  Switch(3,24);
-    //  arrSwitches[3] =  Switch(7,11);
+    Switch objSwitch3 = Switch(3,24);
+    arrSwitches[2] =  objSwitch3;
+
+    Switch objSwitch4 = Switch(7,11);
+    arrSwitches[3] =  objSwitch4;
   }
 
   void startSensors(){
@@ -148,6 +150,7 @@ void serverGotMessage(void);
 void *startGpioServer1(void *t);
 void *startGpioServer2(void *t);
 void *startGpioServer3(void *t);
+void *startGpioServer4(void *t);
 
 EchoServer es = EchoServer(8080);
 SBoard objBoard;
@@ -158,10 +161,11 @@ int main( int argc, char **argv )
   ::objBoard.initializeOnce();
   ::objBoard.startSensors();
 
-  pthread_t threads[1];
+  pthread_t threads[4];
   int rc1 = pthread_create(&threads[0], NULL, startGpioServer1, NULL);
-int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
-// int rc1 = pthread_create(&threads[0], NULL, startGpioServer, NULL);
+  int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
+  int rc3 = pthread_create(&threads[2], NULL, startGpioServer3, NULL);
+  int rc4 = pthread_create(&threads[3], NULL, startGpioServer4, NULL);
 
   if (rc1 ) {
     cout << "Error:unable to create GPIO thread," << rc1 << endl;
@@ -172,6 +176,16 @@ int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
     cout << "Error:unable to create GPIO thread," << rc1 << endl;
     exit(-1);
   }
+
+  if (rc3 ) {
+    cout << "Error:unable to create GPIO thread," << rc3 << endl;
+    exit(-1);
+  }
+
+  if (rc4 ) {
+    cout << "Error:unable to create GPIO thread," << rc4 << endl;
+    exit(-1);
+  }
   //   pthread_exit(NULL);
 
   ::es.msg = serverGotMessage;
@@ -180,20 +194,26 @@ int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
 
 void *startGpioServer1(void *t){
 
-    Switch objSwitch =  ::objBoard.arrSwitches[0];
-    objSwitch.startSensor();
+  Switch objSwitch =  ::objBoard.arrSwitches[0];
+  objSwitch.startSensor();
 }
 
 void *startGpioServer2(void *t){
 
-    Switch objSwitch =  ::objBoard.arrSwitches[1];
-    objSwitch.startSensor();
+  Switch objSwitch =  ::objBoard.arrSwitches[1];
+  objSwitch.startSensor();
 }
 
 void *startGpioServer3(void *t){
 
-    Switch objSwitch =  ::objBoard.arrSwitches[2];
-    objSwitch.startSensor();
+  Switch objSwitch =  ::objBoard.arrSwitches[2];
+  objSwitch.startSensor();
+}
+
+void *startGpioServer4(void *t){
+
+  Switch objSwitch =  ::objBoard.arrSwitches[3];
+  objSwitch.startSensor();
 }
 
 void serverGotMessage(void){
