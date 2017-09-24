@@ -96,7 +96,7 @@ public:
 class SBoard {
 
 public:
-  Switch arrSwitches[1];
+  Switch arrSwitches[4];
 
 
   void initializeOnce(){
