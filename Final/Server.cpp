@@ -164,7 +164,7 @@ int main( int argc, char **argv )
   pthread_t threads[4];
   int rc1 = pthread_create(&threads[0], NULL, startGpioServer1, NULL);
   int rc2 = pthread_create(&threads[1], NULL, startGpioServer2, NULL);
-  //int rc3 = pthread_create(&threads[2], NULL, startGpioServer3, NULL);
+  int rc3 = pthread_create(&threads[2], NULL, startGpioServer3, NULL);
   //int rc4 = pthread_create(&threads[3], NULL, startGpioServer4, NULL);
 
   if (rc1 ) {
@@ -177,12 +177,12 @@ int main( int argc, char **argv )
     exit(-1);
   }
 
-/*
+
   if (rc3 ) {
     cout << "Error:unable to create GPIO thread," << rc3 << endl;
     exit(-1);
   }
-
+/*
   if (rc4 ) {
     cout << "Error:unable to create GPIO thread," << rc4 << endl;
     exit(-1);
