@@ -112,7 +112,7 @@ public:
     Switch objSwitch3 = Switch(3,24);
     arrSwitches[2] =  objSwitch3;
 
-    Switch objSwitch4 = Switch(7,13);
+    Switch objSwitch4 = Switch(22,13);
     arrSwitches[3] =  objSwitch4;
   }
 
