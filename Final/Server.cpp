@@ -23,10 +23,14 @@
 #include <iostream>
 #include <pthread.h>
 
-
 #define WAIT_TIME 500
 
+int intReadPin = -1;
+
 using namespace std;
+
+bool isFile(const char *fileName);
+void createFile(const char *fileName);
 
 class Switch {
 
@@ -35,6 +39,7 @@ public:
   bool isOn = true;
   int intWritePin = 0;
   int intReadPin = 0;
+  bool (*fp)(Switch);
   pthread_t threads[1];
 
 
@@ -66,7 +71,7 @@ public:
       // Read Switch state for manually press
       int intPinValue = digitalRead(intReadPin);
 
-      if (intPinValue == 1)
+      if (intPinValue == 1 || fp(*this) == true)
       {
         delay(WAIT_TIME);
         intPinValue = digitalRead(intReadPin);
@@ -75,6 +80,7 @@ public:
         this ->  toggle();
 
         this -> toggledState(isOn, this);
+	remove("1.txt");
       }
     }
   }
@@ -90,7 +96,7 @@ public:
   }
 
   virtual void toggledState(bool state, Switch *objTmpSwitch);
-
+  virtual bool shouldToggle(Switch *objTmpSwitch);
 };
 
 class SBoard {
@@ -101,7 +107,7 @@ public:
 
   void initializeOnce(){
 
-    cout << "Initialize Switchboard called";
+    Util::log( "Initialize Switchboard called");
 
     Switch objSwitch1 = Switch(0,29);
     arrSwitches[0] =  objSwitch1;
@@ -151,6 +157,11 @@ void *startGpioServer1(void *t);
 void *startGpioServer2(void *t);
 void *startGpioServer3(void *t);
 void *startGpioServer4(void *t);
+bool printSwitch1(Switch objTmpSwitch);
+bool printSwitch2(Switch objTmpSwitch);
+bool printSwitch3(Switch objTmpSwitch);
+bool printSwitch4(Switch objTmpSwitch);
+
 
 EchoServer es = EchoServer(8080);
 SBoard objBoard;
@@ -188,7 +199,7 @@ int main( int argc, char **argv )
     exit(-1);
   }
   //   pthread_exit(NULL);
-
+ delay(10*WAIT_TIME);
   ::es.msg = serverGotMessage;
   ::es.run();
 }
@@ -196,30 +207,76 @@ int main( int argc, char **argv )
 void *startGpioServer1(void *t){
 
   Switch objSwitch =  ::objBoard.arrSwitches[0];
+  objSwitch.fp = printSwitch1;
   objSwitch.startSensor();
 }
 
 void *startGpioServer2(void *t){
 
   Switch objSwitch =  ::objBoard.arrSwitches[1];
+  objSwitch.fp = printSwitch2;
   objSwitch.startSensor();
 }
 
 void *startGpioServer3(void *t){
 
   Switch objSwitch =  ::objBoard.arrSwitches[2];
+  objSwitch.fp = printSwitch3;
   objSwitch.startSensor();
 }
 
 void *startGpioServer4(void *t){
 
   Switch objSwitch =  ::objBoard.arrSwitches[3];
+  objSwitch.fp = printSwitch4;
   objSwitch.startSensor();
 }
 
 void serverGotMessage(void){
 
   // ::objBoard.toggle();
+}
+
+bool isFile(const char *fileName)
+{
+    std::ifstream infile(fileName);
+    return infile.good();
+}
+
+void createFile(const char *fileName)
+{
+	std::ofstream{ fileName };
+}
+
+bool printSwitch1(Switch objTmpSwitch){
+
+//  Util::log( "Switch PIN: " + objTmpSwitch.intReadPin);
+
+ if(intReadPin != -1){
+	intReadPin = -1;
+	return true;
+}
+
+
+  return false;
+}
+
+bool printSwitch2(Switch objTmpSwitch){
+
+ // Util::log( "Switch PIN: " + objTmpSwitch.intReadPin);
+  return false;
+}
+
+bool printSwitch3(Switch objTmpSwitch){
+
+ // Util::log( "Switch PIN: " + objTmpSwitch.intReadPin);
+  return false;
+}
+
+bool printSwitch4(Switch objTmpSwitch){
+
+ // Util::log( "Switch PIN: " + objTmpSwitch.intReadPin);
+  return false;
 }
 
 void Switch::toggledState(bool state, Switch *objTmpSwitch)
@@ -233,6 +290,18 @@ void Switch::toggledState(bool state, Switch *objTmpSwitch)
   } else {
     ::es.broadcast("Switch Off");
   }
+}
+
+bool Switch::shouldToggle(Switch *objTmpSwitch)
+{
+
+  //Util::log( "Asked me" );
+	if (intReadPin == objTmpSwitch->intWritePin){
+	  Util::log( "Web Operation Switch" );
+	intReadPin = -1;
+	return true;
+	}
+	return false;
 }
 
 EchoServer::EchoServer( int port ) : WebSocketServer( port )
@@ -255,6 +324,14 @@ void EchoServer::onMessage( int socketID, const string& data )
   // Reply back with the same message
   Util::log( "Received: " + data );
 
+//const char* strInput = (const char*)data;
+
+//  createFile("1.txt");
+intReadPin = 0;
+// Switch objSwitch =  ::objBoard.arrSwitches[0];
+//                objSwitch.toggle();
+// Util::log( "Command: " + objSwitch.intReadPin );
+
   this->send( socketID, data );
   this->broadcast(data);
   this->msg();
@@ -269,3 +346,5 @@ void EchoServer::onError( int socketID, const string& message )
 {
   Util::log( "Error: " + message );
 }
+
+
