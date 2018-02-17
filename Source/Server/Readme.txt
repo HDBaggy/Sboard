@@ -10,3 +10,4 @@
 	- https://github.com/dhbaird/easywsclient
 	- Compile the sample program using "make" command.
 
+4. The "Final" folder, install.sh file and make commands are very important.
