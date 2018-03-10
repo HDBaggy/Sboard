@@ -18,6 +18,6 @@ int main() {
 
 void interrupt(){
 
-const char* message[] = "s1 updated";
-Server::SendToAll(message);
+//const char* message[] = "s1 updated";
+//Server::SendToAll(message);
 }

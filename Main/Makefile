@@ -1,26 +1,28 @@
 # Compiler
 compiler = g++
 
+# App Directory
+dirApp = App
+
 # Libraries
 libBoard = -lpthread
 libSwitch = -lwiringPi
 
 #  Board source - binary
 srcBoard = Board/*.cpp Switch/*.cpp
-binBoard = board
+binBoard = $(dirApp)/board
 
 # Client source - binary
-srcClient = Client/*.cpp Client/TCPLibrary/*.cpp
-binClient = Client
+srcClient = Client/*.cpp 
+binClient = $(dirApp)/Client
 
 # Server source - binary
 srcServer = Server/*.cpp 
-binServer = Server
+binServer = $(dirApp)/Server
 
 # Server source - binary
-srcSwitchReader = ReadSwitch/*.cpp
-binSwitchReader = readSwitch
-
+srcSwitchReader = ReadSwitch/*.cpp Switch/*.cpp Switch/*.h
+binSwitchReader = $(dirApp)/readSwitch
 
 all : board client server readSwitch
 
@@ -28,13 +30,13 @@ board : $(srcBoard)
 	$(compiler) $(srcBoard) -o $(binBoard) $(libBoard)
 
 client : $(srcClient)
-		$(compiler) $(srcClient) -o $(binClient) $(libBoard)
+		$(compiler) $(srcClient) $(additionalFlat) -o $(binClient) $(libBoard)
 
 server : $(srcServer)
 	$(compiler) $(srcServer) -o $(binServer) $(libBoard)
 
 readSwitch : $(srcSwitchReader)
-	$(compiler) $(srcSwitchReader) -o $(binSwitchReader) $(libBoard) $(libSwitch)
+	$(compiler) $(srcSwitchReader) -I Switch/ -o $(binSwitchReader) $(libBoard) $(libSwitch)
 
 clean:
-	rm $(binBoard)
+	rm $(dirApp)/*
