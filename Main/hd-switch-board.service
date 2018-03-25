@@ -1,0 +1,19 @@
+#  Script.sh
+#
+#
+#  Created by Harshit on 27/10/17.
+#
+
+[Unit]
+Description = board
+#After=network.target
+
+[Service]
+Type = oneshot
+ExecStart = /home/pi/Sboardv2/switchboard/board
+RemainAfterExit = true
+ExecStop = /home/pi/Sboardv2/switchboard/board
+StandardOutput = journal
+
+[Install]
+WantedBy=multi-user.target
