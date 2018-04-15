@@ -91,6 +91,4 @@ void sendMessage(){
          }else {
 		cout << "PID wad nil";
 	}
-
-
 }
