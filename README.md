@@ -19,10 +19,10 @@ learning c
 copy files to /etc/systemd/system
 Register to systemctl using below sequential programs
 
-systemctl daemon-reload foo.service
-systemctl enable foo.service
-systemctl start foo.service
-systemctl status foo.service
+systemctl daemon-reload foo.service<br />
+systemctl enable foo.service<br />
+systemctl start foo.service<br />
+systemctl status foo.service<br />
 
 
 
