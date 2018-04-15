@@ -24,6 +24,10 @@ systemctl enable foo.service<br />
 systemctl start foo.service<br />
 systemctl status foo.service<br />
 
+Alternatively edit "/etc/rc.local" file
+add below code above exit 0 line
+
+/home/pi/Sboardv2/switchboard/board &
 
 
 Below are static commands:
