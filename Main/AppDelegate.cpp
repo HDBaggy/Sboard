@@ -166,13 +166,14 @@ void *startSwitch4Thread(void *t)
 
 void *wifiReconnectorThread(void *t)
 {
+    std::this_thread::sleep_for(600s);
     while(1){
         #ifndef DEBUG
         std::system("sh /home/pi/Production/Sboard/WifiReconnect/Wifi_reconnect.sh");
 #else
         std::system("sh WifiReconnect/Wifi_reconnect.sh");
 #endif
-        std::this_thread::sleep_for(5s);
+        std::this_thread::sleep_for(60s);
     }
     pthread_exit(0);
 }

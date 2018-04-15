@@ -41,7 +41,8 @@
 ##################################################################
 # Settings
 # Where and what you want to call the Lockfile
-lockfile='/var/run/WiFi_Check.pid'
+#lockfile='/var/run/WiFi_Check.pid'
+lockfile='/home/pi/App/WiFi_Check.pid'
 # Which Interface do you want to check/fix
 wlan='wlan0'
 pingip='192.168.1.1'
