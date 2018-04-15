@@ -2,6 +2,7 @@
 #include "mythread.h"
 #include "server.h"
 
+/*
 using namespace std;
 
 int main() {
@@ -15,7 +16,7 @@ int main() {
 
   return 0;
 }
-
+*/
 void interrupt(){
 
 //const char* message[] = "s1 updated";

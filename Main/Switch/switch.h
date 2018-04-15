@@ -15,11 +15,13 @@ class Switch {
     char *name;
     int id;
     bool isOn;
+    bool isInitialised;
     int readPin;
     int writePin;
 
   public:
     Switch();
+    Switch(int readPin, int writePin);
     void SetName(const char *name);
     void SetId(int id);
     void SetPins(int readPin,int writePin);

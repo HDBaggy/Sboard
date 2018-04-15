@@ -9,7 +9,7 @@ libBoard = -lpthread
 libSwitch = -lwiringPi
 
 #  Board source - binary
-srcBoard = Board/*.cpp Switch/*.cpp
+srcBoard = */*.cpp *.cpp
 binBoard = $(dirApp)/board
 
 # Client source - binary
@@ -24,19 +24,10 @@ binServer = $(dirApp)/Server
 srcSwitchReader = ReadSwitch/*.cpp Switch/*.cpp Switch/*.h
 binSwitchReader = $(dirApp)/readSwitch
 
-all : board client server readSwitch
+all : board
 
 board : $(srcBoard)
-	$(compiler) $(srcBoard) -o $(binBoard) $(libBoard)
-
-client : $(srcClient)
-		$(compiler) $(srcClient) $(additionalFlat) -o $(binClient) $(libBoard)
-
-server : $(srcServer)
-	$(compiler) $(srcServer) -o $(binServer) $(libBoard)
-
-readSwitch : $(srcSwitchReader)
-	$(compiler) $(srcSwitchReader) -I Switch/ -o $(binSwitchReader) $(libBoard) $(libSwitch)
+	$(compiler) $(srcBoard) -o $(binBoard) $(libBoard) $(libSwitch)
 
 clean:
 	rm $(dirApp)/*

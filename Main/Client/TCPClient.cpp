@@ -42,7 +42,8 @@ bool TCPClient::setup(string address , int port)
   	server.sin_port = htons( port );
   	if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
   	{
-    		perror("connect failed. Error");
+    		//perror("connect failed. Error");
+        cout << "Connect to server failed.";
     		return false;
   	}
   	return true;

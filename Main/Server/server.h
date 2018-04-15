@@ -14,9 +14,15 @@
 #include "mythread.h"
 #include "client.h"
 
-#define PORT 30666
+//#define PORT 30661
 
 using namespace std;
+
+typedef struct server_handler {
+    
+    Client *objClient;
+    void (*serverListner)(string strMessage);
+} server_t;
 
 class Server {
 
@@ -29,11 +35,10 @@ class Server {
     char buff[256];
 
   public:
-    Server();
+    void(*serverListner)(string strMessage);
+    Server(int port);
     void AcceptAndDispatch();
     static void * HandleClient(void *args);
-
-  private:
     static void ListClients();
     static void SendToAll(char *message);
     static int FindClientIndex(Client *c); 
