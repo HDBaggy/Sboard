@@ -97,6 +97,21 @@ void serverListner(string strMessage){
         objRead1.ToggleSwitch();
         saveState();
     }
+
+    else if (strMessage == "t2" || strMessage == "t2\n"){
+        objRead2.ToggleSwitch();
+        saveState();
+    }
+
+    else if (strMessage == "t3" || strMessage == "t3\n"){
+        objRead3.ToggleSwitch();
+        saveState();
+    }
+
+    else if (strMessage == "t4" || strMessage == "t4\n"){
+        objRead4.ToggleSwitch();
+        saveState();
+    }
 }
 
 void *startServerThread(void *t){
@@ -114,6 +129,21 @@ void clientListner(string strMessage){
         objRead1.ToggleSwitch();
         saveState();
     }
+
+    else if (strMessage == "t2"){
+        objRead2.ToggleSwitch();
+        saveState();
+    }
+
+    else if (strMessage == "t3"){
+        objRead3.ToggleSwitch();
+        saveState();
+    }
+
+    else if (strMessage == "t4"){
+        objRead4.ToggleSwitch();
+        saveState();
+    }
 }
 
 void *startClientThread(void *t){
@@ -129,6 +159,7 @@ void *startClientThread(void *t){
 // ReadSwitch.cpp Call Back
 void toggleListner(Switch pobjSwitch){
     cout << "Switch toggled" << pobjSwitch.readPin;
+	objServer->SendToAll("updated");
 }
 
 void *startSwitch1Thread(void *t)
