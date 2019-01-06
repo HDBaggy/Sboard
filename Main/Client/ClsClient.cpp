@@ -13,8 +13,10 @@
 
 using namespace std;
 
-void *startTmpMsg(void *t);
-void sendMessage();
+void *startTmpMsg1(void *t);
+void *startTmpMsg2(void *t);
+void sendMessage1();
+void sendMessage2();
 
 TCPClient tcp;
 
@@ -71,7 +73,22 @@ ClsClient::ClsClient(string strAddress, int port){
             cout << "toggle";
             //            tcp.Send(to_string("toggled to"));
             //            sendMessage();
-            int rc6 = pthread_create(&threads[0], NULL, startTmpMsg, NULL);
+            int rc6 = pthread_create(&threads[0], NULL, startTmpMsg1, NULL);
+            
+            if (rc6 ) {
+                cout << "Error:unable to create Client thread," << rc6 << endl;
+                exit(-1);
+            }
+            
+            if(clientListner != NULL)
+                clientListner(rec);
+            
+        } if (rec == "t2" || rec=="t2\n"){
+            
+            cout << "toggle";
+            //            tcp.Send(to_string("toggled to"));
+            //            sendMessage();
+            int rc6 = pthread_create(&threads[0], NULL, startTmpMsg2, NULL);
             
             if (rc6 ) {
                 cout << "Error:unable to create Client thread," << rc6 << endl;
@@ -88,12 +105,17 @@ ClsClient::ClsClient(string strAddress, int port){
     sleep(1);
 }
 
-void *startTmpMsg(void *t){
-    sendMessage();
+void *startTmpMsg1(void *t){
+    sendMessage1();
     pthread_exit(0);
 }
 
-void sendMessage(){
+void *startTmpMsg2(void *t){
+    sendMessage2();
+    pthread_exit(0);
+}
+
+void sendMessage1(){
     
     ofstream myfile;
     myfile.open ("server_log.txt");
@@ -102,6 +124,40 @@ void sendMessage(){
     
     ifstream myReadFile;
     myReadFile.open("s1_pid.txt");
+    char output[10];
+    
+    if (myReadFile.is_open()) {
+        
+        while (!myReadFile.eof()) {
+            myReadFile >> output;
+            //cout<<output;
+        }
+    }
+    
+    char *value = output;
+    const char* strPID  = value;
+    
+    std::string str1(strPID);
+    int intId = atoi(str1.c_str());
+    
+    if (intId != 0){
+        cout << "Sending notification to PID: " << intId;
+        int ret;
+        ret = kill(intId,SIGUSR1);
+    }else {
+        cout << "PID wad nil";
+    }
+}
+
+void sendMessage2(){
+    
+    ofstream myfile;
+    myfile.open ("server_log.txt");
+    myfile <<  "t2";
+    myfile.close();
+    
+    ifstream myReadFile;
+    myReadFile.open("s2_pid.txt");
     char output[10];
     
     if (myReadFile.is_open()) {
